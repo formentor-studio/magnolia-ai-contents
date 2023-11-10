@@ -1,0 +1,2 @@
+# Magnolia AI contents
+This module of [Magnolia CMS](https://www.magnolia-cms.com/) provides a set of features for [prompt engineers](https://en.wikipedia.org/wiki/Prompt_engineering) to create contents using [Large language models](https://en.wikipedia.org/wiki/Large_language_model) like [GPT](https://en.wikipedia.org/wiki/GPT-3) from [Open AI](https://openai.com/).
