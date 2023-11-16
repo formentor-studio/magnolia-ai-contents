@@ -1,4 +1,4 @@
-package org.formentor;
+package org.formentor.magnolia.ai;
 
 /**
  * This class is optional and represents the configuration for the magnolia-ai-contents module.

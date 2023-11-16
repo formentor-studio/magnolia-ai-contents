@@ -4,8 +4,8 @@
   <name>magnolia-ai-contents</name>
   <displayName>${project.name}</displayName>
   <description>${project.description}</description>
-  <class>org.formentor.AIContentsModule</class>
-  <versionHandler>org.formentor.setup.AIContentsModuleVersionHandler</versionHandler>
+  <class>org.formentor.magnolia.ai.AIContentsModule</class>
+  <versionHandler>org.formentor.magnolia.ai.setup.AIContentsModuleVersionHandler</versionHandler>
   <version>${project.version}</version>
 
   <!-- For more information on module descriptor configuration options -->
