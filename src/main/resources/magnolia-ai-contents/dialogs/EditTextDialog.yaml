@@ -1,0 +1,9 @@
+# label: Tell the model how to edit the text
+form:
+  properties:
+    prompt:
+      $type: textField
+      rows: 3
+actions:
+  cancel:
+    $type: closeAction
