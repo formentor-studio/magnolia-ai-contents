@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TextAIFieldDefinition extends TextFieldDefinition {
     private Integer words;
-    private String performance;
+    private String model;
     private String strategy;
     private PromptGeneratorDefinition promptGenerator;
 

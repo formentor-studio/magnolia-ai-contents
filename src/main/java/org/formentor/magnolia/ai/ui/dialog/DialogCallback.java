@@ -17,8 +17,8 @@ import info.magnolia.ui.dialog.FormDialogDefinition;
 import info.magnolia.ui.editor.EditorView;
 import info.magnolia.ui.editor.FormDefinition;
 import info.magnolia.ui.editor.FormView;
+import info.magnolia.ui.field.ConfiguredFieldDefinition;
 import info.magnolia.ui.field.LocaleSelector;
-import info.magnolia.ui.field.TextFieldDefinition;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
@@ -72,8 +73,8 @@ public class DialogCallback {
     private void applyInitialValuesToForm(FormDefinition form, Map<String, String> initialValues) {
         initialValues.forEach((key, value) -> {
             form.getFieldDefinition(key).ifPresent(field -> {
-                if (field instanceof TextFieldDefinition) {
-                    ((TextFieldDefinition) field).setDefaultValue(value);
+                if (field instanceof ConfiguredFieldDefinition) {
+                    ((ConfiguredFieldDefinition) field).setDefaultValue(value);
                 }
             });
         });
@@ -112,7 +113,7 @@ public class DialogCallback {
     }
 
     @FunctionalInterface
-    public interface Callback extends Function<Map, CompletableFuture> {
+    public interface Callback extends Function<Map<String, Optional<String>>, CompletableFuture> {
     }
 
     @Getter
@@ -136,8 +137,8 @@ public class DialogCallback {
 
         @Override
         public void execute() throws ActionExecutionException {
-            Map<String, Object> properties = new HashMap<>();
-            form.getPropertyNames().forEach(propertyName -> properties.put(propertyName.toString(), form.getPropertyValue(propertyName.toString()).orElse("")));
+            Map<String, Optional<String>> properties = new HashMap<>();
+            form.getPropertyNames().forEach(propertyName -> properties.put(propertyName.toString(), form.getPropertyValue(propertyName.toString())));
             getDefinition().getCallback()
                     .apply(properties)
                     .join();

@@ -10,10 +10,40 @@
 
   <!-- For more information on module descriptor configuration options -->
   <!-- https://documentation.magnolia-cms.com/display/DOCS/XML-based+module+descriptor -->
+  <components>
+    <id>main</id>
+    <!-- OpenAI implementation -->
+    <component>
+      <type>org.formentor.magnolia.ai.domain.TextAiGenerator</type>
+      <implementation>org.formentor.magnolia.ai.infrastructure.openai.TextAiGeneratorOpenAi</implementation>
+    </component>
+    <component>
+      <type>org.formentor.magnolia.ai.infrastructure.openai.TokenProvider</type>
+      <implementation>org.formentor.magnolia.ai.infrastructure.openai.TokenProviderPasswordsImpl</implementation>
+      <scope>singleton</scope>
+    </component>
+    <component>
+      <type>org.formentor.magnolia.ai.infrastructure.openai.OpenAiApiClientProvider</type>
+      <implementation>org.formentor.magnolia.ai.infrastructure.openai.OpenAiApiClientProvider</implementation>
+    </component>
+  </components>
+
+  <components>
+    <id>datasource-aimodels</id>
+    <component>
+      <type>info.magnolia.ui.field.SelectFieldSupport</type>
+      <implementation>org.formentor.magnolia.ai.ui.datasource.AiModelsSelectFieldSupport</implementation>
+    </component>
+  </components>
 
   <dependencies>
     <dependency>
       <name>core</name>
+      <version>*</version>
+    </dependency>
+    <!-- Transversal dependency as this module uses the "TempFilesManager" that is created by "ui-framework-core" -->
+    <dependency>
+      <name>ui-framework-core</name>
       <version>*</version>
     </dependency>
     <!--  Add other dependencies here, e.g the mte (magnolia templating essentials).

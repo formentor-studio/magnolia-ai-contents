@@ -1,13 +1,21 @@
 package org.formentor.magnolia.ai.application;
 
+import org.formentor.magnolia.ai.domain.TextAiGenerator;
+
 import java.util.concurrent.CompletableFuture;
 
 public class TextAIComplete {
-    public CompletableFuture<String> completeText(String prompt, Integer words, String performance) {
-        throw new RuntimeException("Unsupported operation completeText(String, Integer)");
+    private final TextAiGenerator textAiGenerator;
+
+    public TextAIComplete(TextAiGenerator textAiGenerator) {
+        this.textAiGenerator = textAiGenerator;
     }
 
-    public CompletableFuture<String> editText(String prompt, String instruction) {
+    public CompletableFuture<String> complete(String prompt, String model, Integer tokens) {
+        return textAiGenerator.complete(prompt, model, tokens);
+    }
+
+    public CompletableFuture<String> edit(String prompt, String instruction) {
         throw new RuntimeException("Unsupported operation editText(String, String)");
     }
 }

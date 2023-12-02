@@ -5,6 +5,8 @@ import info.magnolia.module.ModuleLifecycleContext;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * This class is optional and represents the configuration for the magnolia-ai-contents module.
  * By exposing simple getter/setter/adder methods, this bean can be configured via content2bean
@@ -17,7 +19,7 @@ import lombok.Setter;
 public class AIContentsModule implements ModuleLifecycle {
     /* you can optionally implement info.magnolia.module.ModuleLifecycle */
     private OpenAI openAI;
-
+    private List<AiModel> models;
     @Override
     public void start(ModuleLifecycleContext moduleLifecycleContext) {
 
@@ -32,6 +34,13 @@ public class AIContentsModule implements ModuleLifecycle {
     @Setter
     public static class OpenAI {
         private String host;
+    }
+
+    @Getter
+    @Setter
+    public static class AiModel {
+        private String label;
+        private String name;
     }
 
 }
