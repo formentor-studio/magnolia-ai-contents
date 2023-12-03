@@ -7,9 +7,6 @@ form:
       $type: comboBoxField
       datasource:
         $type: aiModelsDatasource
-    words:
-      $type: textField
-      defaultValue: "2048"
 actions:
   cancel:
     $type: closeAction

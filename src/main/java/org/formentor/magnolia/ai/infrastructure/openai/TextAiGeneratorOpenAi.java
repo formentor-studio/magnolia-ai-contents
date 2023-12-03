@@ -27,7 +27,6 @@ public class TextAiGeneratorOpenAi implements TextAiGenerator {
                 .frequencyPenalty(0.0)
                 .presencePenalty(0.0)
                 .temperature(0.5)
-                .maxTokens(tokens)
                 .build();
 
         return CompletableFuture.supplyAsync(() -> api.createChatCompletion(request))

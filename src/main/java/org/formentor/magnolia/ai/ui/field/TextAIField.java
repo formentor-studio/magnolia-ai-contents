@@ -143,14 +143,13 @@ public class TextAIField extends CustomField<String> {
             // initialFormValues.put("prompt", derivePromptFromDefinitionAndFormView(definition, getFormFromSubApp(parentView)));
             initialFormValues.put("prompt", derivePromptFromDefinitionAndValueContext(definition, valueContext));
             initialFormValues.put("model", definition.getModel());
-            initialFormValues.put("words", Optional.ofNullable(definition.getWords()).orElse(COMPLETION_MAX_WORDS_DEFAULT).toString());
 
             dialogCallback.open(
                     DIALOG_COMPLETE_ID,
                     properties -> textAIComplete.complete(
                             properties.get("prompt").orElse(""),
                             properties.get("model").orElse(getDefaultModel()),
-                            properties.get("words").map(Integer::valueOf).orElse(definition.getWords())
+                            null
                     ).thenAccept(textField::setValue),
                     initialFormValues
             );}
@@ -194,7 +193,7 @@ public class TextAIField extends CustomField<String> {
                 .orElse("");
 
         if (promptGenerator.getTemplate() != null) {
-            return i18n.translate(promptGenerator.getTemplate(), prompt, localeContext.getCurrent().getDisplayName());
+            return i18n.translate(promptGenerator.getTemplate(), prompt, localeContext.getCurrent().getDisplayName(), definition.getWords());
         }
 
         return prompt;
