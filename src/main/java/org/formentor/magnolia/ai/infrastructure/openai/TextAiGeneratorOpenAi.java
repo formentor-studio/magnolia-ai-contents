@@ -30,14 +30,17 @@ public class TextAiGeneratorOpenAi implements TextAiGenerator {
                 .build();
 
         return CompletableFuture.supplyAsync(() -> api.createChatCompletion(request))
-                .thenApply(completionResult -> completionResult.getChoices().get(0).getMessage().getContent())
-                .thenApply(this::removeStartingLineFeeds);
+                .thenApply(completionResult -> completionResult.getChoices().get(0).getMessage().getContent());
     }
 
-    private String removeStartingLineFeeds(String text) {
-        int indexStart = 0;
-        for (; indexStart < text.length() && text.charAt(indexStart) == 10 ; indexStart++) {}
+    @Override
+    public CompletableFuture<String> edit(String prompt, String model, String instruction) {
+        /*
+        Translate the following from slang to a business letter:
+        'Dude, This is Joe, check out this spec on this standing lamp.'
+         */
+        String promptWithInstruction = String.format("%s:\n%s", instruction, prompt);
 
-        return text.substring(indexStart);
+        return complete(promptWithInstruction, model, null);
     }
 }

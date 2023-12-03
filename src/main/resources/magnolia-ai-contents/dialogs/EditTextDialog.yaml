@@ -1,9 +1,14 @@
 # label: Tell the model how to edit the text
 form:
   properties:
-    prompt:
+    instruction:
       $type: textField
       rows: 3
+    model:
+      $type: comboBoxField
+      datasource:
+        $type: aiModelsDatasource
+
 actions:
   cancel:
     $type: closeAction

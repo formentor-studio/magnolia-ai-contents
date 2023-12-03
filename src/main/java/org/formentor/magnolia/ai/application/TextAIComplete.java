@@ -15,7 +15,7 @@ public class TextAIComplete {
         return textAiGenerator.complete(prompt, model, tokens);
     }
 
-    public CompletableFuture<String> edit(String prompt, String instruction) {
-        throw new RuntimeException("Unsupported operation editText(String, String)");
+    public CompletableFuture<String> edit(String prompt, String instruction, String model) {
+        return textAiGenerator.edit(prompt, model, instruction);
     }
 }

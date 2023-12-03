@@ -64,7 +64,6 @@ public class TextAIField extends CustomField<String> {
 
     private static final String DIALOG_COMPLETE_ID = "magnolia-ai-contents:CompleteTextDialog";
     private static final String DIALOG_EDIT_ID = "magnolia-ai-contents:EditTextDialog";
-    private static final int COMPLETION_MAX_WORDS_DEFAULT = 2048;
 
     @Inject
     public TextAIField(AppContext appContext, TranslationService translationService, LocaleContext localeContext, I18nContentSupport i18nContentSupport, AbstractTextField textField, TextAIFieldDefinition definition, DialogDefinitionRegistry dialogDefinitionRegistry, I18nizer i18nizer, DialogBuilder dialogBuilder, TextAIComplete textAIComplete, SimpleTranslator i18n, ValueContext<JcrNodeWrapper> valueContext, AIContentsModule aiContentsModule, UIComponent parentView) {
@@ -160,10 +159,16 @@ public class TextAIField extends CustomField<String> {
 
     private Button buildEditButton(String label) {
         Button button = new Button(label);
+        Map<String, String> initialFormValues = new HashMap<>();
+        initialFormValues.put("model", definition.getModel());
         button.addClickListener((Button.ClickListener) event -> dialogCallback.open(
                 DIALOG_EDIT_ID,
-                properties -> textAIComplete.edit(textField.getValue(), properties.get("prompt").toString()).thenAccept(textField::setValue),
-                EMPTY_MAP
+                properties -> textAIComplete.edit(
+                        textField.getValue(),
+                        properties.get("instruction").orElse(""),
+                        properties.get("model").orElse(getDefaultModel())
+                ).thenAccept(textField::setValue),
+                initialFormValues
         ));
 
         return button;
