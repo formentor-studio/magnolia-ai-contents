@@ -1,5 +1,6 @@
 package org.formentor.magnolia.ai.application;
 
+import org.formentor.magnolia.ai.AIContentsModule;
 import org.formentor.magnolia.ai.domain.TextAiGenerator;
 
 import java.util.concurrent.CompletableFuture;
@@ -7,8 +8,8 @@ import java.util.concurrent.CompletableFuture;
 public class TextAIComplete {
     private final TextAiGenerator textAiGenerator;
 
-    public TextAIComplete(TextAiGenerator textAiGenerator) {
-        this.textAiGenerator = textAiGenerator;
+    public TextAIComplete(AIContentsModule aiContentsModule) {
+        textAiGenerator = aiContentsModule.getTextAiGenerator();
     }
 
     public CompletableFuture<String> complete(String prompt, String model, Integer tokens) {

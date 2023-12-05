@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 public interface OpenAiApi {
+    @Deprecated
     @POST
     @Path("/v1/completions")
     @Consumes({ MediaType.APPLICATION_JSON })

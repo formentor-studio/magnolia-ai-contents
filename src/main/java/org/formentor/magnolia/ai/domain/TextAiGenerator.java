@@ -10,4 +10,17 @@ public interface TextAiGenerator {
         throw new RuntimeException("Unsupported operation completeText(String, String, String)");
     }
 
+    static TextAiGenerator dummy() {
+        return new TextAiGenerator() {
+            @Override
+            public CompletableFuture<String> complete(String prompt, String model, Integer tokens) {
+                return CompletableFuture.completedFuture(prompt);
+            }
+
+            @Override
+            public CompletableFuture<String> edit(String prompt, String model, String instruction) {
+                return CompletableFuture.completedFuture(prompt);
+            }
+        };
+    }
 }

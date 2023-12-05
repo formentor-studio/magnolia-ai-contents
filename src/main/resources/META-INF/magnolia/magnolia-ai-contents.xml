@@ -14,17 +14,13 @@
     <id>main</id>
     <!-- OpenAI implementation -->
     <component>
-      <type>org.formentor.magnolia.ai.domain.TextAiGenerator</type>
+      <type>org.formentor.magnolia.ai.infrastructure.openai.TextAiGeneratorOpenAi</type>
       <implementation>org.formentor.magnolia.ai.infrastructure.openai.TextAiGeneratorOpenAi</implementation>
     </component>
+    <!-- Azure implementation -->
     <component>
-      <type>org.formentor.magnolia.ai.infrastructure.openai.TokenProvider</type>
-      <implementation>org.formentor.magnolia.ai.infrastructure.openai.TokenProviderPasswordsImpl</implementation>
-      <scope>singleton</scope>
-    </component>
-    <component>
-      <type>org.formentor.magnolia.ai.infrastructure.openai.OpenAiApiClientProvider</type>
-      <implementation>org.formentor.magnolia.ai.infrastructure.openai.OpenAiApiClientProvider</implementation>
+      <type>org.formentor.magnolia.ai.infrastructure.azure.TextAiGeneratorAzure</type>
+      <implementation>org.formentor.magnolia.ai.infrastructure.azure.TextAiGeneratorAzure</implementation>
     </component>
   </components>
 

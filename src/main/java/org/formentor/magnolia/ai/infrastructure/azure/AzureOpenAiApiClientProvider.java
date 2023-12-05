@@ -1,4 +1,4 @@
-package org.formentor.magnolia.ai.infrastructure.openai;
+package org.formentor.magnolia.ai.infrastructure.azure;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -16,29 +16,29 @@ import javax.ws.rs.core.UriBuilder;
 import java.util.function.Supplier;
 
 @Slf4j
-public class OpenAiApiClientProvider implements Supplier<OpenAiApi> {
+public class AzureOpenAiApiClientProvider implements Supplier<AzureOpenAiApi> {
     private final AIContentsModule definition;
-    private final TokenProvider tokenProvider;
+    private final AzureApiKeyProvider apiKeyProvider;
 
     @Inject
-    public OpenAiApiClientProvider(AIContentsModule definition, TokenProviderPasswords tokenProvider) {
+    public AzureOpenAiApiClientProvider(AIContentsModule definition, AzureApiKeyProviderPasswords apiKeyProvider) {
         this.definition = definition;
-        this.tokenProvider = tokenProvider;
+        this.apiKeyProvider = apiKeyProvider;
     }
 
     @Override
-    public OpenAiApi get() {
-        if (definition.getOpenAI() == null) {
-            log.error("Missing configuration of OpenAI");
+    public AzureOpenAiApi get() {
+        if (definition.getAzure() == null) {
+            log.error("Missing configuration of Azure in ai-contents");
             return null;
         }
 
-        UriBuilder FULL_PATH = UriBuilder.fromPath(definition.getOpenAI().getHost());
+        UriBuilder FULL_PATH = UriBuilder.fromPath(buildTargeUri(definition.getAzure().getHost(), definition.getAzure().getResource(), definition.getAzure().getDeployment()));
         return ((ResteasyClient) ClientBuilder.newClient())
                     .target(FULL_PATH)
-                    .register(new AuthenticatorFilter(tokenProvider.get()))
+                    .register(new AuthenticatorFilter(apiKeyProvider.get()))
                     .register(buildJacksonProvider())
-                    .proxy(OpenAiApi.class);
+                    .proxy(AzureOpenAiApi.class);
     }
 
     private static class AuthenticatorFilter implements ClientRequestFilter {
@@ -48,11 +48,15 @@ public class OpenAiApiClientProvider implements Supplier<OpenAiApi> {
         }
         @Override
         public void filter(ClientRequestContext requestContext) {
-            requestContext.getHeaders().add("Authorization", "Bearer " + token);
+            requestContext.getHeaders().add("api-key", token);
         }
     }
 
-    private ResteasyJackson2Provider buildJacksonProvider() {
+    private String buildTargeUri(String host, String resource, String deployment) {
+        return String.format("https://%s.%s/openai/deployments/%s", resource, host, deployment);
+    }
+
+    protected ResteasyJackson2Provider buildJacksonProvider() {
         OpenAiResteasyJackson2Provider jackson2Provider = new OpenAiResteasyJackson2Provider();
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -64,4 +68,5 @@ public class OpenAiApiClientProvider implements Supplier<OpenAiApi> {
 
     private static class OpenAiResteasyJackson2Provider extends ResteasyJackson2Provider {
     }
+
 }

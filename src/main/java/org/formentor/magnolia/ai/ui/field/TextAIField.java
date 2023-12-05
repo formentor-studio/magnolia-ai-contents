@@ -42,8 +42,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.EMPTY_MAP;
-
 @Slf4j
 public class TextAIField extends CustomField<String> {
 
@@ -66,7 +64,7 @@ public class TextAIField extends CustomField<String> {
     private static final String DIALOG_EDIT_ID = "magnolia-ai-contents:EditTextDialog";
 
     @Inject
-    public TextAIField(AppContext appContext, TranslationService translationService, LocaleContext localeContext, I18nContentSupport i18nContentSupport, AbstractTextField textField, TextAIFieldDefinition definition, DialogDefinitionRegistry dialogDefinitionRegistry, I18nizer i18nizer, DialogBuilder dialogBuilder, TextAIComplete textAIComplete, SimpleTranslator i18n, ValueContext<JcrNodeWrapper> valueContext, AIContentsModule aiContentsModule, UIComponent parentView) {
+    public TextAIField(AppContext appContext, TranslationService translationService, LocaleContext localeContext, I18nContentSupport i18nContentSupport, AbstractTextField textField, TextAIFieldDefinition definition, DialogDefinitionRegistry dialogDefinitionRegistry, I18nizer i18nizer, DialogBuilder dialogBuilder, TextAIComplete textAIComplete, ValueContext<JcrNodeWrapper> valueContext, AIContentsModule aiContentsModule, UIComponent parentView) {
         this.appName = appContext.getName();
         this.localeContext = localeContext;
         this.fallbackLocale = i18nContentSupport.getFallbackLocale();

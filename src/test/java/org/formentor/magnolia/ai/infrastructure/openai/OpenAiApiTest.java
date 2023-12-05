@@ -54,8 +54,8 @@ public class OpenAiApiTest {
         return aiContentsModule;
     }
 
-    private TokenProvider mockTokenProvider(String token) {
-        TokenProvider tokenProvider = mock(TokenProvider.class);
+    private TokenProviderPasswords mockTokenProvider(String token) {
+        TokenProviderPasswords tokenProvider = mock(TokenProviderPasswords.class);
         when(tokenProvider.get()).thenReturn(token);
 
         return tokenProvider;

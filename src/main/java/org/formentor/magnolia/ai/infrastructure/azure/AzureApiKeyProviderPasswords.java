@@ -1,4 +1,4 @@
-package org.formentor.magnolia.ai.infrastructure.openai;
+package org.formentor.magnolia.ai.infrastructure.azure;
 
 import info.magnolia.context.MgnlContext;
 import info.magnolia.context.SystemContext;
@@ -18,13 +18,11 @@ import javax.jcr.Session;
 import java.util.Optional;
 
 /**
- * Provider for the OpenAI token.
- *
- * This implementation fetches the token from Passwords manager.
+ * Implementation of AzureApiKeyProvider that stores the API KEY in password-manager
  */
 @Slf4j
-public class TokenProviderPasswordsImpl implements TokenProvider {
-    private static final String PASSWORDS_API_KEY_PATH="/openai/token";
+public class AzureApiKeyProviderPasswords implements AzureApiKeyProvider {
+    private static final String PASSWORDS_API_KEY_PATH="/azure/api-key";
     private static final long LISTENER_DELAY = 2000L;
     private static final long LISTENER_MAX_DELAY = 2000L;
 
@@ -36,7 +34,7 @@ public class TokenProviderPasswordsImpl implements TokenProvider {
     private String apiKey;
 
     @Inject
-    public TokenProviderPasswordsImpl(PasswordRegistry passwordRegistry, SystemContext systemContext) {
+    public AzureApiKeyProviderPasswords(PasswordRegistry passwordRegistry, SystemContext systemContext) {
         this.passwordRegistry = passwordRegistry;
         this.systemContext = systemContext;
     }
@@ -57,7 +55,7 @@ public class TokenProviderPasswordsImpl implements TokenProvider {
                     .withDelay(LISTENER_DELAY, LISTENER_MAX_DELAY)
                     .register();
         } catch (RepositoryException e) {
-            log.warn("Errors registering OpenAI api-key listener on \"{}\" in keystore workspace.", PASSWORDS_API_KEY_PATH, e);
+            log.warn("Errors registering Azure api-key listener on \"{}\" in keystore workspace.", PASSWORDS_API_KEY_PATH, e);
         }
     }
 
@@ -67,7 +65,7 @@ public class TokenProviderPasswordsImpl implements TokenProvider {
             try {
                 keystoreListenerRegistration.unregister();
             } catch (RepositoryException e) {
-                log.warn("Errors unregistering OpenAI api-key listener in keystore workspace.");
+                log.warn("Errors unregistering Azure api-key listener in keystore workspace.");
             }
         }
     }
@@ -85,13 +83,13 @@ public class TokenProviderPasswordsImpl implements TokenProvider {
         try {
             Session keyStoreSession = this.systemContext.getJCRSession(PasswordManagerModule.KEYSTORE_WORKSPACE);
             if (!keyStoreSession.nodeExists(apiKeyPasswordsPath)) {
-                log.error("OpenAI api-key not found in \"{}\" of Password manager.", apiKeyPasswordsPath);
+                log.error("Azure api-key not found in \"{}\" of Password manager.", apiKeyPasswordsPath);
                 return Optional.empty();
             }
             return Optional.of(passwordRegistry.getPassword(keyStoreSession.getNode(apiKeyPasswordsPath).getIdentifier()).getDecryptedValue());
         } catch (RepositoryException ex) {
-            log.error("Errors when trying to get OpenAI api-key from {} in Password manager.", apiKeyPasswordsPath);
-            throw new RuntimeRepositoryException("Errors when trying to get OpenAI api-key from Password manager.", ex);
+            log.error("Errors when trying to get Azure api-key from {} in Password manager.", apiKeyPasswordsPath);
+            throw new RuntimeRepositoryException("Errors when trying to get Azure api-key from Password manager.", ex);
         }
     }
 }
