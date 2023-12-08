@@ -3,27 +3,10 @@ form:
     prompt:
       $type: textField
       rows: 12
-    performance:
+    model:
       $type: comboBoxField
-      defaultValue: best
       datasource:
-        $type: optionListDatasource
-        options:
-          - name: low
-            label: Low
-            value: low
-          - name: medium
-            label: Medium
-            value: medium
-          - name: high
-            label: High
-            value: high
-          - name: best
-            label: Best
-            value: best
-    words:
-      $type: textField
-      defaultValue: "2048"
+        $type: aiModelsDatasource
 actions:
   cancel:
     $type: closeAction

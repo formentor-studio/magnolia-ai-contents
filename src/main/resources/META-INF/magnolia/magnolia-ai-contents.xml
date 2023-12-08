@@ -10,10 +10,36 @@
 
   <!-- For more information on module descriptor configuration options -->
   <!-- https://documentation.magnolia-cms.com/display/DOCS/XML-based+module+descriptor -->
+  <components>
+    <id>main</id>
+    <!-- OpenAI implementation -->
+    <component>
+      <type>org.formentor.magnolia.ai.infrastructure.openai.TextAiGeneratorOpenAi</type>
+      <implementation>org.formentor.magnolia.ai.infrastructure.openai.TextAiGeneratorOpenAi</implementation>
+    </component>
+    <!-- Azure implementation -->
+    <component>
+      <type>org.formentor.magnolia.ai.infrastructure.azure.TextAiGeneratorAzure</type>
+      <implementation>org.formentor.magnolia.ai.infrastructure.azure.TextAiGeneratorAzure</implementation>
+    </component>
+  </components>
+
+  <components>
+    <id>datasource-aimodels</id>
+    <component>
+      <type>info.magnolia.ui.field.SelectFieldSupport</type>
+      <implementation>org.formentor.magnolia.ai.ui.datasource.AiModelsSelectFieldSupport</implementation>
+    </component>
+  </components>
 
   <dependencies>
     <dependency>
       <name>core</name>
+      <version>*</version>
+    </dependency>
+    <!-- Transversal dependency as this module uses the "TempFilesManager" that is created by "ui-framework-core" -->
+    <dependency>
+      <name>ui-framework-core</name>
       <version>*</version>
     </dependency>
     <!--  Add other dependencies here, e.g the mte (magnolia templating essentials).

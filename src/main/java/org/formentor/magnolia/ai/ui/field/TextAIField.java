@@ -24,6 +24,7 @@ import info.magnolia.ui.editor.EditorView;
 import info.magnolia.ui.editor.FormView;
 import info.magnolia.ui.editor.LocaleContext;
 import lombok.extern.slf4j.Slf4j;
+import org.formentor.magnolia.ai.AIContentsModule;
 import org.formentor.magnolia.ai.application.TextAIComplete;
 import org.formentor.magnolia.ai.domain.PropertyPromptValue;
 import org.formentor.magnolia.ai.domain.Strategy;
@@ -41,8 +42,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.EMPTY_MAP;
-
 @Slf4j
 public class TextAIField extends CustomField<String> {
 
@@ -52,31 +51,28 @@ public class TextAIField extends CustomField<String> {
 
     private final TextAIFieldDefinition definition;
     private final Strategy strategy;
-    private final Integer words;
-    private final String performance;
 
     private final AbstractTextField textField;
     private final DialogCallback dialogCallback;
     private final TextAIComplete textAIComplete;
     private final SimpleTranslator i18n;
     private final ValueContext<JcrNodeWrapper> valueContext;
+    private final AIContentsModule aiContentsModule;
     private final UIComponent parentView;
 
     private static final String DIALOG_COMPLETE_ID = "magnolia-ai-contents:CompleteTextDialog";
     private static final String DIALOG_EDIT_ID = "magnolia-ai-contents:EditTextDialog";
-    private static final int COMPLETION_MAX_WORDS_DEFAULT = 2048;
 
     @Inject
-    public TextAIField(AppContext appContext, TranslationService translationService, LocaleContext localeContext, I18nContentSupport i18nContentSupport, AbstractTextField textField, TextAIFieldDefinition definition, DialogDefinitionRegistry dialogDefinitionRegistry, I18nizer i18nizer, DialogBuilder dialogBuilder, TextAIComplete textAIComplete, SimpleTranslator i18n, ValueContext<JcrNodeWrapper> valueContext, UIComponent parentView) {
+    public TextAIField(AppContext appContext, TranslationService translationService, LocaleContext localeContext, I18nContentSupport i18nContentSupport, AbstractTextField textField, TextAIFieldDefinition definition, DialogDefinitionRegistry dialogDefinitionRegistry, I18nizer i18nizer, DialogBuilder dialogBuilder, TextAIComplete textAIComplete, ValueContext<JcrNodeWrapper> valueContext, AIContentsModule aiContentsModule, UIComponent parentView) {
         this.appName = appContext.getName();
         this.localeContext = localeContext;
         this.fallbackLocale = i18nContentSupport.getFallbackLocale();
         this.definition = definition;
         this.strategy = determineStrategyFromString(definition.getStrategy());
-        this.words = definition.getWords();
-        this.performance = definition.getPerformance();
 
         this.textField = textField;
+        this.aiContentsModule = aiContentsModule;
         this.i18n = new SimpleTranslator(translationService, new LocaleProvider() {
             @Override
             public Locale getLocale() {
@@ -143,14 +139,14 @@ public class TextAIField extends CustomField<String> {
             // By the moment it is discarded to build the prompt from FormView as it does not support Complex fields like MultiValue - See how works FormView.write(), the property "subEditors" is private :(
             // initialFormValues.put("prompt", derivePromptFromDefinitionAndFormView(definition, getFormFromSubApp(parentView)));
             initialFormValues.put("prompt", derivePromptFromDefinitionAndValueContext(definition, valueContext));
-            initialFormValues.put("words", Optional.ofNullable(definition.getWords()).orElse(COMPLETION_MAX_WORDS_DEFAULT).toString());
+            initialFormValues.put("model", definition.getModel());
 
             dialogCallback.open(
                     DIALOG_COMPLETE_ID,
-                    properties -> textAIComplete.completeText(
-                            properties.get("prompt").toString(),
-                            Optional.ofNullable(Integer.valueOf(properties.get("words").toString())).orElse(words),
-                            Optional.ofNullable(properties.get("performance").toString()).orElse(performance)
+                    properties -> textAIComplete.complete(
+                            properties.get("prompt").orElse(""),
+                            properties.get("model").orElse(getDefaultModel()),
+                            null
                     ).thenAccept(textField::setValue),
                     initialFormValues
             );}
@@ -161,10 +157,16 @@ public class TextAIField extends CustomField<String> {
 
     private Button buildEditButton(String label) {
         Button button = new Button(label);
+        Map<String, String> initialFormValues = new HashMap<>();
+        initialFormValues.put("model", definition.getModel());
         button.addClickListener((Button.ClickListener) event -> dialogCallback.open(
                 DIALOG_EDIT_ID,
-                properties -> textAIComplete.editText(textField.getValue(), properties.get("prompt").toString()).thenAccept(textField::setValue),
-                EMPTY_MAP
+                properties -> textAIComplete.edit(
+                        textField.getValue(),
+                        properties.get("instruction").orElse(""),
+                        properties.get("model").orElse(getDefaultModel())
+                ).thenAccept(textField::setValue),
+                initialFormValues
         ));
 
         return button;
@@ -194,7 +196,7 @@ public class TextAIField extends CustomField<String> {
                 .orElse("");
 
         if (promptGenerator.getTemplate() != null) {
-            return  i18n.translate(promptGenerator.getTemplate(), prompt, localeContext.getCurrent().getDisplayName());
+            return i18n.translate(promptGenerator.getTemplate(), prompt, localeContext.getCurrent().getDisplayName(), definition.getWords());
         }
 
         return prompt;
@@ -271,6 +273,14 @@ public class TextAIField extends CustomField<String> {
         return propertyValue instanceof List;
     }
 
+    private String getDefaultModel() {
+        List<AIContentsModule.AiModel> models = aiContentsModule.getModels();
+        if (models != null && !models.isEmpty()) {
+            return models.get(0).getName();
+        }
+
+        return "";
+    }
     /**
      * NOTE: By the moment it is discarded to build the prompt from FormView as it does not support Complex fields like MultiValue - See how works FormView.write(), the property "subEditors" is private :(
      *

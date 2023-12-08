@@ -23,8 +23,8 @@ import java.util.Optional;
  * This implementation fetches the token from Passwords manager.
  */
 @Slf4j
-public class TokenProviderPasswordsImpl implements TokenProvider {
-    private static final String PASSWORDS_API_KEY_PATH="/openai/token";
+public class TokenProviderPasswords implements TokenProvider {
+    private static final String PASSWORDS_API_KEY_PATH="/openai/api-key";
     private static final long LISTENER_DELAY = 2000L;
     private static final long LISTENER_MAX_DELAY = 2000L;
 
@@ -36,7 +36,7 @@ public class TokenProviderPasswordsImpl implements TokenProvider {
     private String apiKey;
 
     @Inject
-    public TokenProviderPasswordsImpl(PasswordRegistry passwordRegistry, SystemContext systemContext) {
+    public TokenProviderPasswords(PasswordRegistry passwordRegistry, SystemContext systemContext) {
         this.passwordRegistry = passwordRegistry;
         this.systemContext = systemContext;
     }
