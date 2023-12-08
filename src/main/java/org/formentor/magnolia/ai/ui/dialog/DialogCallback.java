@@ -138,7 +138,7 @@ public class DialogCallback {
         @Override
         public void execute() throws ActionExecutionException {
             Map<String, Optional<String>> properties = new HashMap<>();
-            form.getPropertyNames().forEach(propertyName -> properties.put(propertyName.toString(), form.getPropertyValue(propertyName.toString())));
+            form.getPropertyNames().forEach(propertyName -> properties.put(propertyName.toString(), form.getPropertyValue(propertyName.toString()).flatMap(value -> Optional.of(value.toString()))));
             getDefinition().getCallback()
                     .apply(properties)
                     .join();

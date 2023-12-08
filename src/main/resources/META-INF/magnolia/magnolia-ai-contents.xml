@@ -17,6 +17,10 @@
       <type>org.formentor.magnolia.ai.infrastructure.openai.TextAiGeneratorOpenAi</type>
       <implementation>org.formentor.magnolia.ai.infrastructure.openai.TextAiGeneratorOpenAi</implementation>
     </component>
+    <component>
+      <type>org.formentor.magnolia.ai.domain.ImageAiGenerator</type>
+      <implementation>org.formentor.magnolia.ai.infrastructure.openai.AiImageGeneratorOpeAi</implementation>
+    </component>
     <!-- Azure implementation -->
     <component>
       <type>org.formentor.magnolia.ai.infrastructure.azure.TextAiGeneratorAzure</type>
