@@ -1,0 +1,24 @@
+# label: Specify the prompt for the desired image
+form:
+  properties:
+    prompt:
+      $type: textField
+      rows: 3
+    size:
+      $type: comboBoxField
+      defaultValue: Size512
+      datasource:
+        $type: optionListDatasource
+        options:
+          - name: Size256
+            label: 256x256
+            value: Size256
+          - name: Size512
+            label: 512x512
+            value: Size512
+          - name: Size1024
+            label: 1024X1024
+            value: Size1024
+actions:
+  cancel:
+    $type: closeAction
