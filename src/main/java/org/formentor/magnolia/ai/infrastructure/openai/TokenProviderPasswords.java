@@ -24,7 +24,7 @@ import java.util.Optional;
  */
 @Slf4j
 public class TokenProviderPasswords implements TokenProvider {
-    private static final String PASSWORDS_API_KEY_PATH="/openai/token";
+    private static final String PASSWORDS_API_KEY_PATH="/openai/api-key";
     private static final long LISTENER_DELAY = 2000L;
     private static final long LISTENER_MAX_DELAY = 2000L;
 
