@@ -28,6 +28,7 @@ import org.formentor.magnolia.ai.AIContentsModule;
 import org.formentor.magnolia.ai.application.TextAIComplete;
 import org.formentor.magnolia.ai.domain.PropertyPromptValue;
 import org.formentor.magnolia.ai.domain.Strategy;
+import org.formentor.magnolia.ai.domain.valueObject.PropertyPathValue;
 import org.formentor.magnolia.ai.ui.dialog.DialogCallback;
 
 import javax.inject.Inject;
@@ -191,7 +192,7 @@ public class TextAIField extends CustomField<String> {
                         .stream()
                         .reduce("", (acc, propertyDefinition) -> {
                             Optional<String> propertyPromptValue = getPropertyPromptValue(item, propertyDefinition);
-                            return propertyPromptValue.map(propertyValue -> acc.concat(String.format("%s: %s.\n", getPropertyPromptLabel(propertyDefinition.getName()), propertyValue))).orElse(acc);
+                            return propertyPromptValue.map(propertyValue -> acc.concat(String.format("%s: %s.\n", getPropertyPromptLabel(propertyDefinition.getPropertyPath()), propertyValue))).orElse(acc);
                         }, String::concat))
                 .orElse("");
 
@@ -202,7 +203,8 @@ public class TextAIField extends CustomField<String> {
         return prompt;
     }
 
-    private String getPropertyPromptLabel(String propertyName) {
+    private String getPropertyPromptLabel(PropertyPathValue propertyPath) {
+        final String propertyName = propertyPath.isPath()? propertyPath.getValue().replaceAll("/", "."): propertyPath.getValue();
         String labelKeyWithoutLabel = String.format("%s.%s", appName, propertyName);
         String label = i18n.translate(labelKeyWithoutLabel);
         if (label.equals(labelKeyWithoutLabel)) {
@@ -212,8 +214,8 @@ public class TextAIField extends CustomField<String> {
     }
 
     private Optional<String> getPropertyPromptValue(Node node, PropertyPromptValue promptDefinition) {
-        Optional<Object> propertyValueObject = getPropertyValueObject(node, promptDefinition.getName());
-        if (!propertyValueObject.isPresent()) {
+        Optional<Object> propertyValueObject = getPropertyValueObject(node, promptDefinition.getPropertyPath());
+        if (propertyValueObject.isEmpty()) {
             return Optional.empty();
         }
 
@@ -226,7 +228,7 @@ public class TextAIField extends CustomField<String> {
             List<String> propertyValueList = (List<String>)propertyValueObject.get();
             int limit = Optional.ofNullable(promptDefinition.getLimit()).orElse(propertyValueList.size());
             if (!promptDefinition.isReference()) {
-                return Optional.ofNullable(String.join(", ", propertyValueList.subList(0, Math.min(limit, propertyValueList.size()))));
+                return Optional.of(String.join(", ", propertyValueList.subList(0, Math.min(limit, propertyValueList.size()))));
             } else {
                 String referenceWorkspace = promptDefinition.getTargetWorkspace();
                 String referencePropertyName = promptDefinition.getTargetPropertyName();
@@ -236,7 +238,7 @@ public class TextAIField extends CustomField<String> {
                         .map(Optional::get)
                         .collect(Collectors.toList());
 
-                return Optional.ofNullable(String.join(", ", propertyValuesPopulatedWithReference.subList(0, Math.min(limit, propertyValuesPopulatedWithReference.size()))));
+                return Optional.of(String.join(", ", propertyValuesPopulatedWithReference.subList(0, Math.min(limit, propertyValuesPopulatedWithReference.size()))));
             }
         }
     }
@@ -255,9 +257,22 @@ public class TextAIField extends CustomField<String> {
         }
     }
 
-    private Optional<Object> getPropertyValueObject(Node node, String propertyName) {
+    private Optional<Object> getPropertyValueObject(Node parentNode, PropertyPathValue propertyPath) {
+        Node node;
+        String propertyName = propertyPath.getPropertyName();
+        if (propertyPath.isPath()) {
+            try {
+                node = parentNode.getNode(propertyPath.getNodePath());
+            } catch (RepositoryException e) {
+                log.warn("Errors building prompt. Property path \"{}\" not found", propertyPath);
+                node = parentNode;
+            }
+        } else {
+            node = parentNode;
+        }
+
         Object valueI18n = PropertyUtil.getPropertyValueObject(node, buildPropertyNameByLocale(propertyName, localeContext.getCurrent()));
-        return (valueI18n != null)? Optional.of(valueI18n): Optional.ofNullable(PropertyUtil.getPropertyValueObject(node, propertyName));
+        return (valueI18n != null)? Optional.of(valueI18n): Optional.ofNullable(PropertyUtil.getPropertyValueObject(parentNode, propertyName));
     }
 
     private Optional<String> getPropertyString(Node node, String propertyName) {
@@ -299,7 +314,7 @@ public class TextAIField extends CustomField<String> {
         }
         String prompt = promptGenerator.getProperties().stream()
                 .reduce("", (acc, propertyDefinition) -> {
-                            Optional<String> propertyPromptValue = form.getPropertyValue(propertyDefinition.getName());
+                            Optional<String> propertyPromptValue = form.getPropertyValue(propertyDefinition.getPropertyPath().getValue());
                             return propertyPromptValue.map(value -> acc.concat(String.format("%s is %s. ", propertyDefinition.getName(), value))).orElse(acc);
                         },
                         String::concat)
