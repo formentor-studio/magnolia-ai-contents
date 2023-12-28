@@ -1,5 +1,3 @@
-OJO: el property "performance" ha sido sustituido por "model" y "words" es un comodín del template
-
 # Magnolia AI Contents
 Module of [Magnolia CMS](https://www.magnolia-cms.com/) that adds the following features to create contents using [Large language models](https://en.wikipedia.org/wiki/Large_language_model) like [GPT](https://en.wikipedia.org/wiki/Generative_pre-trained_transformer) from [Open AI](https://openai.com/).
 
@@ -82,6 +80,11 @@ Prompt template and fields of the form that will be used to build the prompt use
 <strong>properties</strong>
 
 List of fields in the form whose value will appear in the prompt. In case of `link fields`, specify the target `workspace` and `property` name (prompt generator will take the value of this property)
+
+> NOTE
+> 
+> In case of composite fields, you will prefix the property name with the path of the child node -e.g. /location/address/number means child node "/location/address" and property name "number"
+> 
 
 <strong>template</strong>
 

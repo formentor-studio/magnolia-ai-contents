@@ -272,7 +272,7 @@ public class TextAIField extends CustomField<String> {
         }
 
         Object valueI18n = PropertyUtil.getPropertyValueObject(node, buildPropertyNameByLocale(propertyName, localeContext.getCurrent()));
-        return (valueI18n != null)? Optional.of(valueI18n): Optional.ofNullable(PropertyUtil.getPropertyValueObject(parentNode, propertyName));
+        return (valueI18n != null)? Optional.of(valueI18n): Optional.ofNullable(PropertyUtil.getPropertyValueObject(node, propertyName));
     }
 
     private Optional<String> getPropertyString(Node node, String propertyName) {
