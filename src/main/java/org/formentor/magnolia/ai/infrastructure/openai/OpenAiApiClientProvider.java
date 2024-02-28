@@ -15,6 +15,9 @@ import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.core.UriBuilder;
 import java.util.function.Supplier;
 
+/**
+ * Provider of REST client for OpenAI API
+ */
 @Slf4j
 public class OpenAiApiClientProvider implements Supplier<OpenAiApi> {
     private final AIContentsModule definition;

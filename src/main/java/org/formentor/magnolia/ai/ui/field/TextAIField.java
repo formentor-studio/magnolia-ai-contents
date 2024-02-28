@@ -26,7 +26,7 @@ import info.magnolia.ui.editor.LocaleContext;
 import lombok.extern.slf4j.Slf4j;
 import org.formentor.magnolia.ai.AIContentsModule;
 import org.formentor.magnolia.ai.application.TextAIComplete;
-import org.formentor.magnolia.ai.domain.PropertyPromptValue;
+import org.formentor.magnolia.ai.domain.valueObject.PropertyPromptValue;
 import org.formentor.magnolia.ai.domain.Strategy;
 import org.formentor.magnolia.ai.domain.valueObject.PropertyPathValue;
 import org.formentor.magnolia.ai.ui.dialog.DialogCallback;
@@ -43,6 +43,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Text field that allows the creation of contents from a given prompt
+ */
 @Slf4j
 public class TextAIField extends CustomField<String> {
 

@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.io.File;
 
 /**
- * Field definition for Image AI.
+ * Field definition for field imageAI
  */
 @FieldType("imageAI")
 @Getter

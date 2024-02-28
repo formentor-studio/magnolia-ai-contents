@@ -19,7 +19,7 @@
     </component>
     <component>
       <type>org.formentor.magnolia.ai.domain.ImageAiGenerator</type>
-      <implementation>org.formentor.magnolia.ai.infrastructure.openai.AiImageGeneratorOpeAi</implementation>
+      <implementation>org.formentor.magnolia.ai.infrastructure.openai.AiImageGeneratorOpenAi</implementation>
     </component>
     <!-- Azure implementation -->
     <component>

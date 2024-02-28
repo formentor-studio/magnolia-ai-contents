@@ -8,6 +8,9 @@ import org.formentor.magnolia.ai.infrastructure.azure.api.CompletionRequest;
 import javax.inject.Inject;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Implementation of text generator for Azure OpenAI
+ */
 public class TextAiGeneratorAzure implements TextAiGenerator {
 
     private final int AZURE_OPENAI_MAX_TOKENS = 4096;
@@ -36,22 +39,18 @@ public class TextAiGeneratorAzure implements TextAiGenerator {
 
         return CompletableFuture.supplyAsync(() -> api.createCompletion(apiVersion, request))
                 .thenApply(completionResult -> completionResult.getChoices().get(0).getText())
-                .thenApply(text -> StringUtils.normalizeSpace(text));
+                .thenApply(StringUtils::normalizeSpace);
     }
 
     @Override
     public CompletableFuture<String> edit(String prompt, String model, String instruction) {
-        /*
-        Translate the following from slang to a business letter:
-        'Dude, This is Joe, check out this spec on this standing lamp.'
-         */
         String promptWithInstruction = String.format("%s:\n%s", instruction, prompt);
 
         return complete(promptWithInstruction, model, null);
     }
 
     private int estimateTokensCount(String prompt) {
-        /**
+        /*
          * At 2023-06-14 based on https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them
          *
          * 1 token ~= 4 chars in English

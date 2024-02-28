@@ -49,6 +49,9 @@ import java.util.concurrent.CompletableFuture;
 
 import static java.util.Collections.EMPTY_MAP;
 
+/**
+ * Image field that generates contents from a given prompt.
+ */
 @Slf4j
 public class ImageAIField extends CustomField<File> {
     private static final Resource DEFAULT_REVIEW_IMG = MagnoliaIcons.FILE;

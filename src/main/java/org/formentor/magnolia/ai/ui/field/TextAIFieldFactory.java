@@ -5,6 +5,9 @@ import info.magnolia.objectfactory.ComponentProvider;
 import info.magnolia.ui.field.TextFieldDefinition;
 import info.magnolia.ui.field.factory.TextFieldFactory;
 
+/**
+ * Factory for field textFieldAI
+ */
 public class TextAIFieldFactory extends TextFieldFactory {
     public TextAIFieldFactory(TextFieldDefinition definition, ComponentProvider componentProvider) {
         super(definition, componentProvider);

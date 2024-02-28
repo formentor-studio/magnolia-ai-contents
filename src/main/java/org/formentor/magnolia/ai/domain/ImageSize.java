@@ -1,5 +1,8 @@
 package org.formentor.magnolia.ai.domain;
 
+/**
+ * Supported images size
+ */
 public enum ImageSize {
     Size256 ("256x256"),
     Size512 ("512x512"),

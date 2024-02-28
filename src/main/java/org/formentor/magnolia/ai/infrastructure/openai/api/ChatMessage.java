@@ -13,7 +13,6 @@ import lombok.NonNull;
  * The assistant messages help store prior responses. They can also be written by a developer to help give examples of desired behavior.
  * </p>
  *
- * see <a href="https://platform.openai.com/docs/guides/chat/introduction">OpenAi documentation</a>
  */
 @Data
 @NoArgsConstructor

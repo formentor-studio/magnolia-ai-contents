@@ -10,6 +10,9 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Implementation of text generator for OpenAI
+ */
 @Slf4j
 public class TextAiGeneratorOpenAi implements TextAiGenerator {
     private final OpenAiApi api;

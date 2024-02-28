@@ -1,9 +1,12 @@
-package org.formentor.magnolia.ai.domain;
+package org.formentor.magnolia.ai.domain.valueObject;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.formentor.magnolia.ai.domain.valueObject.PropertyPathValue;
 
+/**
+ * Definition of a value used to generate a prompt
+ */
 @Getter
 @Setter
 public class PropertyPromptValue {

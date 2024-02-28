@@ -8,11 +8,14 @@ import org.formentor.magnolia.ai.infrastructure.openai.api.CreateImageRequest;
 import javax.inject.Inject;
 import java.util.concurrent.CompletableFuture;
 
-public class AiImageGeneratorOpeAi implements ImageAiGenerator {
+/**
+ * Implementation of image generator for OpenAI
+ */
+public class AiImageGeneratorOpenAi implements ImageAiGenerator {
     private final OpenAiApi api;
 
     @Inject
-    public AiImageGeneratorOpeAi(OpenAiApiClientProvider openAiApiClientProvider) {
+    public AiImageGeneratorOpenAi(OpenAiApiClientProvider openAiApiClientProvider) {
         api = openAiApiClientProvider.get();
     }
 

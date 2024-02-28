@@ -1,7 +1,6 @@
 package org.formentor.magnolia.ai.domain.valueObject;
 
 /**
- * Property path.
  * Specifies path and name of a property
  * - e.g. destination/address/number means node path "destination/address" and property name "number" -
  */

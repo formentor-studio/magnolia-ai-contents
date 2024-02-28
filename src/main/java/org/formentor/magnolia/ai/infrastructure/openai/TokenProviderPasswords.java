@@ -19,7 +19,6 @@ import java.util.Optional;
 
 /**
  * Provider for the OpenAI token.
- *
  * This implementation fetches the token from Passwords manager.
  */
 @Slf4j

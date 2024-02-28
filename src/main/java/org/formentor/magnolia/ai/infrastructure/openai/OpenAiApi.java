@@ -13,6 +13,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+/**
+ * Client interface of OpenAI API Rest
+ */
 public interface OpenAiApi {
     @Deprecated
     @POST

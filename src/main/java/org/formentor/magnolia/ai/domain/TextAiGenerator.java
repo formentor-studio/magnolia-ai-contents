@@ -2,6 +2,9 @@ package org.formentor.magnolia.ai.domain;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Domain class that specifies the contract of text generators
+ */
 public interface TextAiGenerator {
     default CompletableFuture<String> complete(String prompt, String model, Integer tokens) {
         throw new RuntimeException("Unsupported operation completeText(String, String, Integer)");

@@ -11,8 +11,6 @@ import java.util.Map;
 /**
  * A request for OpenAi to generate a predicted completion for a prompt.
  * All fields are nullable.
- *
- * https://beta.openai.com/docs/api-reference/completions/create
  */
 @Builder
 @NoArgsConstructor
@@ -41,7 +39,7 @@ public class CompletionRequest {
     /**
      * What sampling temperature to use. Higher values means the model will take more risks.
      * Try 0.9 for more creative applications, and 0 (argmax sampling) for ones with a well-defined answer.
-     *
+     * <p>
      * We generally recommend using this or {@link CompletionRequest#top_p} but not both.
      */
     Double temperature;
@@ -50,14 +48,14 @@ public class CompletionRequest {
      * An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of
      * the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are
      * considered.
-     *
+     * <p>
      * We generally recommend using this or {@link CompletionRequest#temperature} but not both.
      */
     Double top_p;
 
     /**
      * How many completions to generate for each prompt.
-     *
+     * <p>
      * Because this parameter generates many completions, it can quickly consume your token quota.
      * Use carefully and ensure that you have reasonable settings for {@link CompletionRequest#max_tokens} and {@link CompletionRequest#stop}.
      */
@@ -105,7 +103,7 @@ public class CompletionRequest {
      * Generates best_of completions server-side and returns the "best"
      * (the one with the lowest log probability per token).
      * Results cannot be streamed.
-     *
+     * <p>
      * When used with {@link CompletionRequest#n}, best_of controls the number of candidate completions and n specifies how many to return,
      * best_of must be greater than n.
      */
@@ -113,10 +111,8 @@ public class CompletionRequest {
 
     /**
      * Modify the likelihood of specified tokens appearing in the completion.
-     *
+     * <p>
      * Maps tokens (specified by their token ID in the GPT tokenizer) to an associated bias value from -100 to 100.
-     *
-     * https://beta.openai.com/docs/api-reference/completions/create#completions/create-logit_bias
      */
     Map<String, Integer> logit_bias;
 

@@ -6,6 +6,9 @@ import info.magnolia.ui.field.factory.AbstractFieldFactory;
 
 import java.io.File;
 
+/**
+ * Factory for field imageAI
+ */
 public class ImageAIFieldFactory extends AbstractFieldFactory<File, ImageAIFieldDefinition> {
     public ImageAIFieldFactory(ImageAIFieldDefinition definition, ComponentProvider componentProvider) {
         super(definition, componentProvider);

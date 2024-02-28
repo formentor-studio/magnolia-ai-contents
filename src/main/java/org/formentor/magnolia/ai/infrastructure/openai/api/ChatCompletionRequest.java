@@ -22,7 +22,6 @@ public class ChatCompletionRequest {
 
     /**
      * The messages to generate chat completions for, in the <a
-     * href="https://platform.openai.com/docs/guides/chat/introduction">chat format</a>.<br>
      * see {@link ChatMessage}
      */
     List<ChatMessage> messages;
@@ -101,7 +100,7 @@ public class ChatCompletionRequest {
     List<?> functions;
 
     /**
-     * Controls how the model responds to function calls, as specified in the <a href="https://platform.openai.com/docs/api-reference/chat/create#chat/create-function_call">OpenAI documentation</a>.
+     * Controls how the model responds to function calls.
      */
     @JsonProperty("function_call")
     ChatCompletionRequestFunctionCall functionCall;

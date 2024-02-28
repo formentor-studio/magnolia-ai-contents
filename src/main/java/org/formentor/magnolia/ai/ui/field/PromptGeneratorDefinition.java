@@ -1,7 +1,7 @@
 package org.formentor.magnolia.ai.ui.field;
 
 import lombok.Data;
-import org.formentor.magnolia.ai.domain.PropertyPromptValue;
+import org.formentor.magnolia.ai.domain.valueObject.PropertyPromptValue;
 
 import java.util.ArrayList;
 import java.util.List;

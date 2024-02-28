@@ -11,7 +11,6 @@ import lombok.NonNull;
  * A request for OpenAi to create an image based on a prompt
  * All fields except prompt are optional
  *
- * https://beta.openai.com/docs/api-reference/images/create
  */
 @Builder
 @NoArgsConstructor
