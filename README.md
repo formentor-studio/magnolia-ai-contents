@@ -117,9 +117,6 @@ This field extends [Text field](https://docs.magnolia-cms.com/product-docs/6.2/D
     </dependency>
 </dependencies>
 ```
-```xml
-repository github
-```
 2. Activate and configure [Open AI](https://openai.com/) or [Azure OpenAI](https://azure.microsoft.com/products/cognitive-services/openai-service/)  
 
 #### OpenAI
@@ -137,11 +134,11 @@ repository github
 
 `config:/magnolia-ai-contents/azure`
 
-![open-ai-magnolila](_docs/azure-config.png)
+![azure-open-ai-magnolia](_docs/azure-config.png)
 
 - Specify the `API key` in the secret named `azure/api-key` of [Password Manager](https://docs.magnolia-cms.com/product-docs/6.2/Modules/List-of-modules/Password-Manager-module.html).
 
-![openai-api-key](_docs/azure-api-key.png)
+![azure-openai-api-key](_docs/azure-api-key.png)
 
 3. Specify the models available to create texts. It can be general purpose models - see https://platform.openai.com/docs/models - or fine-tuned models.
 
